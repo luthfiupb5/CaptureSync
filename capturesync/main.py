@@ -65,7 +65,7 @@ def display_startup_animation():
         time.sleep(1.5)  # Simulate loading
         
     # Title and Credits using Panel
-    title = Text("CaptureSync CLI v1.0", style="bold magenta justify=center")
+    title = Text("CaptureSync CLI v1.1", style="bold magenta justify=center")
     credits = Text("\nDeveloped By Luthfi Bassam U P", style="italic blue justify=center")
     link = Text("https://www.linkedin.com/in/luthfibassamup/", style="underline blue justify=center")
     

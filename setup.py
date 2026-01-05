@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="capturesync",
-    version="1.0.0",
+    version="1.1.0",
     description="Automated Image Overlay & Cloud Sync Tool",
     author="Luthfi Bassam U P",
     url="https://github.com/luthfiupb5/CaptureSync",
