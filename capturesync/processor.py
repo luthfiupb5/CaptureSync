@@ -76,7 +76,8 @@ def process_file(file_path, config):
         file_path, 
         landscape_overlay, 
         portrait_overlay, 
-        output_folder
+        output_folder,
+        file_prefix=config.get('file_prefix')
     )
 
     if processed_path:

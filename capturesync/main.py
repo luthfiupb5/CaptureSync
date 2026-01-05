@@ -107,8 +107,17 @@ def main():
         
     # 4. Output Folder
     if not config.get('output_folder') or not os.path.isdir(config.get('output_folder', '')):
-        print("\n[Step 4/4] Select OUTPUT folder (Synced to Google Drive)")
+        print("\n[Step 4/5] Select OUTPUT folder (Synced to Google Drive)")
         config['output_folder'] = get_valid_path("Enter full path to output folder:", is_directory=True)
+        needs_save = True
+
+    # 5. File Prefix (Optional)
+    if 'file_prefix' not in config:
+        print("\n[Step 5/5] Enter File Prefix (Optional)")
+        print("Files will be named like: PREFIX_1.jpg, PREFIX_2.jpg")
+        print("Press Enter to skip and keep original filenames.")
+        prefix = input("> ").strip().strip('"').strip("'")
+        config['file_prefix'] = prefix if prefix else None
         needs_save = True
     
     if needs_save:

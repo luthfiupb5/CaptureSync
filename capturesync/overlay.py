@@ -1,9 +1,35 @@
 import os
 from PIL import Image, ImageOps
 
-def process_image(image_path, landscape_overlay_path, portrait_overlay_path, output_folder):
+def get_next_sequence_index(output_folder, prefix):
+    """
+    Scans output_folder for files starting with {prefix}_
+    Returns the next available integer index.
+    """
+    max_index = 0
+    try:
+        if not os.path.exists(output_folder):
+            return 1
+            
+        for filename in os.listdir(output_folder):
+            if filename.startswith(prefix + "_") and filename.endswith(".jpg"):
+                try:
+                    # Extract number part: PREFIX_123.jpg -> 123
+                    part = filename[len(prefix)+1:-4] 
+                    index = int(part)
+                    if index > max_index:
+                        max_index = index
+                except ValueError:
+                    continue
+    except Exception:
+        pass
+    
+    return max_index + 1
+
+def process_image(image_path, landscape_overlay_path, portrait_overlay_path, output_folder, file_prefix=None):
     """
     Reads image, detects orientation, applies appropriate overlay, and saves to output_folder.
+    If file_prefix is provided, saves as {file_prefix}_{index}.jpg
     Returns the path to the saved file if successful, None otherwise.
     """
     try:
@@ -40,9 +66,16 @@ def process_image(image_path, landscape_overlay_path, portrait_overlay_path, out
                 
                 # Prepare output path
                 filename = os.path.basename(image_path)
-                name, ext = os.path.splitext(filename)
-                # Force output to jpg as requested ("Export optimized JPEG")
-                output_filename = f"{name}_processed.jpg"
+                
+                if file_prefix:
+                    # Sequential naming strategy
+                    next_index = get_next_sequence_index(output_folder, file_prefix)
+                    output_filename = f"{file_prefix}_{next_index}.jpg"
+                else:
+                    # Original naming strategy
+                    name, ext = os.path.splitext(filename)
+                    output_filename = f"{name}_processed.jpg"
+
                 output_path = os.path.join(output_folder, output_filename)
                 
                 # Convert back to RGB for JPEG saving
