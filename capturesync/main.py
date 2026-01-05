@@ -82,7 +82,8 @@ def display_startup_animation():
 
 def main():
     display_startup_animation()
-    config = load_config()
+    # config = load_config() 
+    config = {} # Force fresh config every time as per user request
     
     # Check if necessary config exists, else ask
     needs_save = False
