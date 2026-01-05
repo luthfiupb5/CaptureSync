@@ -17,3 +17,8 @@ test_env/
 *.mo
 .DS_Store
 Thumbs.db
+build/
+dist/
+*.egg-info/
+*.spec
+

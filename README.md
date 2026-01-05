@@ -13,39 +13,52 @@ CaptureSync is a powerful Python automation tool designed for photographers and 
 
 ## 🚀 Prerequisites
 
-1. **Python 3.8+** installed.
+1. **Python 3.8+** installed (For manual installation).
 2. **Google Drive for Desktop** (or any other cloud sync service like Dropbox/OneDrive) installed and running, so you have a local folder that syncs to the cloud.
 
-## 🛠️ Installation
+## 🛠️ Installation & Usage
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/CaptureSync.git
-   cd CaptureSync
-   ```
+### Option 1: Standalone App (Recommended)
+**No installation required!** Perfect for photographers and non-developers.
+1.  Go to the [Releases](https://github.com/luthfiupb5/CaptureSync/releases) page.
+2.  Download `CaptureSync.exe`.
+3.  Double-click to run.
 
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-   *Note: This installs `watchdog`, `Pillow`, and `rich`.*
+### Option 2: Direct Install (For Developers)
+If you have Python installed, you can install directly from GitHub without cloning:
+```bash
+pip install git+https://github.com/luthfiupb5/CaptureSync.git
+```
+Then simply run:
+```bash
+capturesync
+```
 
-## 📖 Usage
+### Option 3: Manual Clone
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/luthfiupb5/CaptureSync.git
+    cd CaptureSync
+    ```
 
-1. **Run the application:**
-   ```bash
-   python capturesync/main.py
-   ```
+2.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *Note: This installs `watchdog`, `Pillow`, and `rich`.*
 
-2. **First-time Setup:**
-   The tool will interactively ask you to select:
-   - **Source Folder**: Where your camera/Lightroom saves images.
-   - **Landscape Overlay**: Path to your landscape branding .png file.
-   - **Portrait Overlay**: Path to your portrait branding .png file.
-   - **Output Folder**: The folder synced with Google Drive.
+3.  **Run:**
+    ```bash
+    python capturesync/main.py
+    ```
 
-3. **Start Shooting:**
-   Simply drop images into the Source Folder. CaptureSync will process them and they will appear in your Output Folder, ready for sharing!
+## ⚙️ Configuration (First Run)
+The tool will interactively ask you to select:
+- **Source Folder**: Where your camera/Lightroom saves images.
+- **Landscape Overlay**: Path to your landscape branding .png file.
+- **Portrait Overlay**: Path to your portrait branding .png file.
+- **Output Folder**: The folder synced with Google Drive.
+- **File Prefix** (Optional): Custom prefix for output files (e.g., `PROFILE26` -> `PROFILE26_1.jpg`).
 
 ## 👤 Credits
 
