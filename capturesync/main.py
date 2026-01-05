@@ -11,10 +11,11 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    from capturesync import watcher
+    from capturesync import watcher, processor
 except ImportError:
     # If running directly inside capturesync/
     import watcher
+    import processor
 
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), 'config.json')
 
@@ -65,7 +66,7 @@ def display_startup_animation():
         time.sleep(1.5)  # Simulate loading
         
     # Title and Credits using Panel
-    title = Text("CaptureSync CLI v1.1", style="bold magenta justify=center")
+    title = Text("CaptureSync CLI v2.0", style="bold magenta justify=center")
     credits = Text("\nDeveloped By Luthfi Bassam U P", style="italic blue justify=center")
     link = Text("https://www.linkedin.com/in/luthfibassamup/", style="underline blue justify=center")
     
@@ -130,8 +131,29 @@ def main():
     print("\n" + "-"*60)
     print(f"Source:   {config['source_folder']}")
     print(f"Output:   {config['output_folder']}")
+    print(f"Output:   {config['output_folder']}")
     print("-"*60)
-    print("Starting process... (Press Ctrl+C to stop)")
+    
+    # 6. Process Existing Files?
+    print("\nCheck for existing files in Source folder?")
+    choice = input("Process existing photos now? (y/n) > ").lower().strip()
+    if choice in ['y', 'yes']:
+        print("\nScanning for existing files...")
+        source = config['source_folder']
+        try:
+            files = sorted(os.listdir(source)) # Sorted to process in order
+            count = 0
+            for filename in files:
+                 filepath = os.path.join(source, filename)
+                 if os.path.isfile(filepath):
+                     # Let processor handle extension checking
+                     processor.process_file(filepath, config)
+                     count += 1
+            print(f"Finished processing existing files.")
+        except Exception as e:
+            print(f"Error scanning source folder: {e}")
+
+    print("\nStarting real-time watcher... (Press Ctrl+C to stop)")
     
     watcher.start_to_watch(config)
 
