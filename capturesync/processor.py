@@ -1,0 +1,89 @@
+import os
+import time
+from . import overlay
+from . import uploader
+
+# Supported extensions
+IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
+
+def is_image(file_path):
+    return os.path.splitext(file_path)[1].lower() in IMAGE_EXTENSIONS
+
+def wait_for_file_ready(file_path, timeout=5):
+    """
+    Waits until the file is fully written and accessible.
+    Cameras/Lightroom might write files in chunks.
+    """
+    start_time = time.time()
+    last_size = -1
+    
+    while time.time() - start_time < timeout:
+        try:
+            if not os.path.exists(file_path):
+                return False
+                
+            current_size = os.path.getsize(file_path)
+            
+            # If size hasn't changed and is > 0, and we can open it, it's likely ready
+            if current_size == last_size and current_size > 0:
+                try:
+                    with open(file_path, 'rb'):
+                        return True
+                except IOError:
+                    pass
+            
+            last_size = current_size
+            time.sleep(1)
+        except Exception:
+            pass
+            
+    return False
+
+def process_file(file_path, config):
+    """
+    Main processing function called when a new file is detected.
+    """
+    if not is_image(file_path):
+        # Ignore non-images (Safeguard)
+        return
+
+    # Ignore processed files if they somehow end up in the source folder
+    # (though user instruction implies source -> output separation)
+    if "_processed" in file_path:
+        return
+
+    print(f"Detected new file: {file_path}")
+
+    # Wait for write to complete
+    if not wait_for_file_ready(file_path):
+        print(f"Timeout waiting for file to be ready: {file_path}")
+        return
+
+    output_folder = config.get("output_folder")
+    landscape_overlay = config.get("landscape_overlay")
+    portrait_overlay = config.get("portrait_overlay")
+
+    if not all([output_folder, landscape_overlay, portrait_overlay]):
+        print("Configuration missing paths. Skipping.")
+        return
+
+    print(f"Processing {os.path.basename(file_path)}...")
+
+    # Step 1: Overlay
+    # For MVP, we write directly to output folder or a temp name in output folder?
+    # overlay.process_image handles writing to the output folder.
+    processed_path = overlay.process_image(
+        file_path, 
+        landscape_overlay, 
+        portrait_overlay, 
+        output_folder
+    )
+
+    if processed_path:
+        print(f"Successfully processed: {processed_path}")
+        # Step 2: Sync (if needed)
+        # In our MVP Option 1, the file is already in the Drive-synced output folder.
+        # But we call sync_file just in case we change strategy later or need to move it.
+        uploader.sync_file(processed_path, output_folder)
+    else:
+        print("Failed to process image.")
