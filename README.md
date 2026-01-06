@@ -1,64 +1,68 @@
-# CaptureSync
+# CaptureSync v5.0
 
-**Automated Image Overlay & Cloud Sync Tool**
+**Automated Image Overlay & Cloud Sync Tool (Windows GUI Edition)**
 
-CaptureSync is a powerful Python automation tool designed for photographers and event organizers. It acts as a real-time bridge between your camera (or Lightroom export folder) and Google Drive, automatically applying branding overlays and syncing files for instant sharing.
+CaptureSync is a professional automation tool designed for photographers and event organizers. It acts as a real-time bridge between your camera (or Lightroom export folder) and Google Drive, immediately applying branding overlays and syncing files for instant sharing.
 
-## ✨ Features
+**v5.0 brings a complete graphical user interface (GUI), no terminal required!**
 
-- **📂 Real-time Watcher**: Instantly detects new images added to a source folder.
-- **🖼️ Smart Overlay**: Automatically detects image aspect ratio (Landscape vs Portrait) and applies the correct branding frame.
-- **☁️ Instant Sync**: Moves processed images to a designated Output folder (e.g., your Google Drive folder) for immediate cloud upload.
-- **🖥️ Beautiful CLI**: Feature-rich terminal interface with status animations and progress tracking.
+![CaptureSync GUI](https://via.placeholder.com/800x400?text=CaptureSync+v5.0+GUI) 
+*(Screenshot placeholder)*
 
-## 🚀 Prerequisites
+## ✨ What's New in v5.0?
 
-1. **Python 3.8+** installed (For manual installation).
-2. **Google Drive for Desktop** (or any other cloud sync service like Dropbox/OneDrive) installed and running, so you have a local folder that syncs to the cloud.
+- **🖥️ Full GUI Interface**: A modern, dark-themed (CustomTkinter) app. No more black command-line windows.
+- **🖼️ Flex-Overlay Logic**: 
+    - You only need *one* overlay (Landscape OR Portrait).
+    - **Square Support**: 1:1 images are automatically handled using the Landscape overlay.
+- **👁️ Live Gallery**: Watch processed images appear in real-time in the new "Gallery" tab.
+- **📂 Process Existing Files**: One-click option to process photos already sitting in your folder.
+- **📊 Live Progress**: Real-time progress bar and "Processed / Total" counter.
+- **🛑 Instant Stop**: Stop button now halts processing immediately.
 
-## 🛠️ Installation & Usage
+## 🚀 Key Features
 
-### Option 1: Standalone App (Recommended)
-**No installation required!** Perfect for photographers and non-developers.
-1.  Go to the [Releases](https://github.com/luthfiupb5/CaptureSync/releases) page.
-2.  Download `CaptureSync.exe`.
-3.  Double-click to run.
+- **Real-time Watcher**: Detects new images the moment they hit the folder.
+- **Smart Orientation**: Automatically applies the correct overlay (Landscape vs Portrait).
+- **Auto-Naming**: Options to keep original filenames or use a custom prefix sequence (e.g., `EventName_1.jpg`).
+- **Instant Cloud Sync**: Saves directly to your Google Drive Desktop folder for immediate upload.
 
-### Option 2: Direct Install (For Developers)
-If you have Python installed, you can install directly from GitHub without cloning:
-```bash
-pip install git+https://github.com/luthfiupb5/CaptureSync.git
-```
-Then simply run:
-```bash
-capturesync
-```
+## 🛠️ Usage (The Easy Way)
 
-### Option 3: Manual Clone
-1.  **Clone the repository:**
+**No Python? No Problem.** CaptureSync is now a standalone Windows Application.
+
+1.  **Download**: Get `CaptureSync.exe` from the [Releases](https://github.com/luthfiupb5/CaptureSync/releases) page.
+2.  **Run**: Double-click the file. (No installation needed!)
+3.  **Configure**:
+    *   **Source Folder**: Browse to your Camera/Lightroom export folder.
+    *   **Overlays**: Browse to your transparent PNG frames.
+    *   **Output Folder**: Browse to your Google Drive folder.
+4.  **Start**: Click **Start Automation**.
+
+That's it! As you take photos, they will automatically be processed and appear in your Gallery tab and your Drive folder.
+
+## ⚙️ Requirements
+
+- **Operating System**: Windows 10 or 11.
+- **Cloud Sync**: Google Drive for Desktop (or Dropbox/OneDrive) recommended for the sync feature.
+
+## 👨‍💻 For Developers
+
+If you want to run from source:
+
+1.  **Clone**:
     ```bash
     git clone https://github.com/luthfiupb5/CaptureSync.git
     cd CaptureSync
     ```
-
-2.  **Install dependencies:**
+2.  **Install**:
     ```bash
     pip install -r requirements.txt
     ```
-    *Note: This installs `watchdog`, `Pillow`, and `rich`.*
-
-3.  **Run:**
+3.  **Run**:
     ```bash
-    python capturesync/main.py
+    python -m capturesync.main
     ```
-
-## ⚙️ Configuration (First Run)
-The tool will interactively ask you to select:
-- **Source Folder**: Where your camera/Lightroom saves images.
-- **Landscape Overlay**: Path to your landscape branding .png file.
-- **Portrait Overlay**: Path to your portrait branding .png file.
-- **Output Folder**: The folder synced with Google Drive.
-- **File Prefix** (Optional): Custom prefix for output files (e.g., `PROFILE26` -> `PROFILE26_1.jpg`).
 
 ## 👤 Credits
 
@@ -67,4 +71,4 @@ The tool will interactively ask you to select:
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/luthfibassamup/)
 
 ---
-*Built with ❤️ using Python.*
+*Built with ❤️ in Python & CustomTkinter.*

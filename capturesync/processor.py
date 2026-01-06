@@ -39,10 +39,13 @@ def wait_for_file_ready(file_path, timeout=5):
             
     return False
 
-def process_file(file_path, config):
+def process_file(file_path, config, log_callback=None):
     """
     Main processing function called when a new file is detected.
     """
+    if log_callback is None:
+        log_callback = print
+
     if not is_image(file_path):
         # Ignore non-images (Safeguard)
         return
@@ -52,22 +55,26 @@ def process_file(file_path, config):
     if "_processed" in file_path:
         return
 
-    print(f"Detected new file: {file_path}")
+    log_callback(f"Detected new file: {file_path}")
 
     # Wait for write to complete
     if not wait_for_file_ready(file_path):
-        print(f"Timeout waiting for file to be ready: {file_path}")
+        log_callback(f"Timeout waiting for file to be ready: {file_path}")
         return
 
     output_folder = config.get("output_folder")
     landscape_overlay = config.get("landscape_overlay")
     portrait_overlay = config.get("portrait_overlay")
 
-    if not all([output_folder, landscape_overlay, portrait_overlay]):
-        print("Configuration missing paths. Skipping.")
+    if not output_folder:
+        log_callback("Configuration missing output folder. Skipping.")
         return
 
-    print(f"Processing {os.path.basename(file_path)}...")
+    if not landscape_overlay and not portrait_overlay:
+         log_callback("Configuration missing overlay. Please provide at least one.")
+         return
+
+    log_callback(f"Processing {os.path.basename(file_path)}...")
 
     # Step 1: Overlay
     # For MVP, we write directly to output folder or a temp name in output folder?
@@ -81,10 +88,10 @@ def process_file(file_path, config):
     )
 
     if processed_path:
-        print(f"Successfully processed: {processed_path}")
+        log_callback(f"Successfully processed: {processed_path}")
         # Step 2: Sync (if needed)
         # In our MVP Option 1, the file is already in the Drive-synced output folder.
         # But we call sync_file just in case we change strategy later or need to move it.
         uploader.sync_file(processed_path, output_folder)
     else:
-        print("Failed to process image.")
+        log_callback("Failed to process image.")

@@ -40,16 +40,31 @@ def process_image(image_path, landscape_overlay_path, portrait_overlay_path, out
             
             # Determine orientation
             width, height = img.size
-            if width > height:
+            
+            # Logic Update v5.0: Square treated as Landscape
+            # Also relaxed requirements: one overlay might be None
+            
+            if width >= height: # Landscape or Square
                 orientation = 'landscape'
                 overlay_path = landscape_overlay_path
-            else:
+            else: # Portrait
                 orientation = 'portrait'
                 overlay_path = portrait_overlay_path
             
-            # Open the selected overlay
-            if not os.path.exists(overlay_path):
-                print(f"Error: Overlay not found at {overlay_path}")
+            # Fallback Logic: If specific overlay missing, try the other one?
+            # User requirement: "atleast one overlay should be there"
+            # If landscape needed but missing, try using portrait if user only provided that? 
+            # (Though user said square can use landscape overlay. didn't explicitly say rotate portrait overlay).
+            # Let's strictly check if the *assigned* overlay exists.
+            
+            if not overlay_path or not os.path.exists(overlay_path):
+                # Try fallback if the other one exists?
+                # "if someone doesnt be having any vertical dimention photos... the field for both overlay not be required"
+                # This implies we just skip processing if we don't have the matching overlay?
+                # Or do we error out?
+                # "it just have a single face interface" -> implies maybe we just skip it silently or log warning.
+                # However, for 100% solidity, let's return None so caller knows we couldn't process it.
+                print(f"Skipping {image_path}: No overlay found for {orientation} orientation.") 
                 return None
                 
             with Image.open(overlay_path) as overlay:
